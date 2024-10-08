@@ -1,3 +1,5 @@
+# Description: Solving the differential equation using Taylor series
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,22 +8,22 @@ alpha = 1.0  # Prey birth rate
 K = 100  # Carrying capacity
 
 # Predation parameters
-beta = 0.1  # Predation rate
+beta = 0.1  # Attack rate
 h = 0.1  # Handling time per prey item
 
 # Predator parameters
-delta = 0.1  # Efficiency of converting conumed prey into predator reproduction
+delta = 0.1  # Efficiency of converting consumed prey into predator reproduction
 gamma = 0.1  # Predator death rate
 
 # Initial conditions
 x0 = 40  # Initial prey population
 y0 = 9  # Initial predator population
 
-# Time setting
-t0 = 0
-t_end = 200
+# Time settings
+t_start = 0
+t_end = 1000
 dt = 0.01  # Time steps
-t_points = np.arange(t0, t_end, dt)
+t_points = np.arange(t_start, t_end, dt)
 
 # Initialize arrays
 x = np.zeros(len(t_points))
@@ -31,12 +33,13 @@ y[0] = y0
 
 
 # Define derivative functions
-def first_derivatives(x, y):
-
-    fx = (beta * x) / (1 + beta * h * x)
-
-    dx1 = alpha * x * (1 - (x / K)) - fx * y
-    dy1 = delta * fx * y - gamma * y
+def rosenzweig_macarthur(x, y):
+    # Functional response
+    predation = (beta * x * y) / (1 + beta * h * x)
+    # Prey growth
+    dx1 = alpha * x * (1 - (x / K)) - predation
+    # Predator growth
+    dy1 = delta * predation - gamma * y
     return dx1, dy1
 
 
@@ -47,12 +50,13 @@ for i in range(len(t_points) - 1):
     yi = y[i]
 
     # First derivatives
-    dx1, dy1 = first_derivatives(xi, yi)
+    dx1, dy1 = rosenzweig_macarthur(xi, yi)
 
-    # Update x and y using Taylor series up to first order
+    # Update x and y using Taylor series
     x[i + 1] = xi + dx1 * dt
     y[i + 1] = yi + dy1 * dt
 
+    # Ensure populations remain non-negative
     x[i + 1] = max(x[i + 1], 0)
     y[i + 1] = max(y[i + 1], 0)
 

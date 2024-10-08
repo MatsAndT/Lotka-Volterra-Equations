@@ -13,7 +13,7 @@ y0 = 9  # Initial predator population
 
 # Time setting
 t0 = 0
-t_end = 15
+t_end = 150
 dt = 0.01  # Time steps
 t_points = np.arange(t0, t_end, dt)
 
