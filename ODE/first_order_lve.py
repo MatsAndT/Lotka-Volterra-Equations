@@ -65,6 +65,7 @@ plt.xlabel("Prey Population")
 plt.ylabel("Predator Population")
 plt.title("Phase Space")
 plt.grid()
+plt.text(0.85, 0.7, f'$x_0 = {x0}$\n $y_0 = {y0}$\n $\\alpha = {alpha}$\n$\\beta = {beta}$\n$\delta = {delta}$\n$\gamma = {gamma}$', transform=plt.gca().transAxes, fontsize=12)
 
 plt.tight_layout()
 plt.show()
